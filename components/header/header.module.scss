@@ -1,0 +1,397 @@
+$teal: #39CDCC;
+$navy: #213F7D;
+$navy-light: #545F7D;
+$border: #E0E0E0;
+$white: #FFFFFF;
+$transition: 0.2s ease;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: $white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 250;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    z-index: 300;
+  }
+}
+
+.logo {
+  display: inline-block;
+  width: 120px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    width: 80px;
+  }
+}
+
+.logoContainer {
+  align-items: center;
+  display: flex;
+  gap: 8rem;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 500px;
+
+  @media (max-width: 1024px) {
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.searchInput {
+  flex: 1;
+  height: 40px;
+  min-width: 400px;
+  padding: 0 16px;
+  border: 1px solid $border;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: $navy;
+  outline: none;
+  transition: border-color $transition;
+
+  &::placeholder {
+    color: $navy-light;
+  }
+
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
+
+  &:focus {
+    border-color: $teal;
+  }
+}
+
+.searchButton {
+  min-width: 50px;
+  height: 40px;
+  background: $teal;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  display: flex;
+ border: 1px solid $border; 
+  align-items: center;
+  justify-content: center;
+  transition: background $transition;
+
+  &:hover {
+    background: darken($teal, 10%);
+  }
+
+  span {
+    font-size: 16px;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.docsLink {
+  font-size: 14px;
+  color: $navy-light;
+  // text-decoration: none;
+  transition: color $transition;
+
+  &:hover {
+    color: $navy;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.notificationBtn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform $transition;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  span {
+    font-size: 20px;
+  }
+}
+
+.notificationBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background: $teal;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 600;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background $transition;
+
+  &:hover {
+    background: rgba($navy, 0.05);
+  }
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: $navy-light;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 500;
+  color: $navy;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.dropdownArrow {
+  font-size: 10px;
+  color: $navy-light;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// Hamburger menu
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: $navy;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+// Mobile menu
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: $white;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 16px;
+  z-index: 150;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.mobileLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: $navy-light;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: background $transition;
+
+  &:hover {
+    background: rgba($navy, 0.05);
+    color: $navy;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.mobileUserProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-top: 1px solid $border;
+  margin-top: 8px;
+}
+
+// Mobile search button
+.mobileActions {
+  display: none;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.mobileSearchBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.mobileSearchContainer {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $white;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  z-index: 260;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  .searchInput {
+    flex: 1;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+
+    &:focus {
+      border-color: $teal;
+    }
+  }
+
+  .searchButton {
+    width: 40px;
+    height: 40px;
+    background: $teal;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .closeSearch {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 18px;
+    color: $navy-light;
+  }
+}

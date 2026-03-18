@@ -1,0 +1,124 @@
+"use client";
+
+import { useState } from "react";
+import styles from "./sidebar.module.scss";
+
+interface NavItem {
+  label: string;
+  icon: string;
+}
+
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+const navigation: NavGroup[] = [
+  {
+    title: "Customers",
+    items: [
+      {
+        label: "Users",
+        icon: "/icons/user-friends.svg",
+      },
+      {
+        label: "Guarantors",
+        icon: "/icons/users.svg",
+      },
+      { label: "Loans", icon: "/icons/sack.svg" },
+      { label: "Decision Models", icon: "/icons/handshake-regular.svg" },
+      { label: "Savings", icon: "/icons/piggy-bank.svg" },
+      { label: "Loan Requests", icon: "/icons/load-request.svg" },
+      { label: "Whitelist", icon: "/icons/white-list.svg" },
+      { label: "Karma", icon: "/icons/karma.svg" },
+    ],
+  },
+  {
+    title: "Businesses",
+    items: [
+      { label: "Organization", icon: "/icons/briefcase.svg" },
+      { label: "Loan Products", icon: "/icons/load-request.svg" },
+      { label: "Savings Products", icon: "/icons/saving-product.svg" },
+      { label: "Fees and Charges", icon: "/icons/fee-charge.svg" },
+      { label: "Transactions", icon: "/icons/transaction.svg" },
+      { label: "Services", icon: "/icons/service.svg" },
+      { label: "Service Account", icon: "/icons/service-account.svg" },
+      { label: "Settlements", icon: "/icons/settlement.svg" },
+      { label: "Reports", icon: "/icons/reports.svg" },
+    ],
+  },
+  {
+    title: "Settings",
+    items: [
+      { label: "Preferences", icon: "/icons/preference.svg" },
+      { label: "Fees and Pricing", icon: "/icons/fee-pricing.svg" },
+      { label: "Audit Logs", icon: "/icons/audit-logs.svg" },
+    ],
+  },
+];
+
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
+  const [activeItem, setActiveItem] = useState("Users");
+
+  return (
+    <>
+      <div
+        className={`${styles.sidebarOverlay} ${isOpen ? styles.visible : ""}`}
+        onClick={onClose}
+      />
+      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+        <div className={styles.sidebarContent}>
+          <div className={styles.switchOrg}>
+            <span className={styles.icon}>
+              <img src={"/icons/briefcase.svg"} />
+            </span>
+            <span>Switch Organization</span>
+            <span className={styles.arrow}>
+              <img src={"/icons/caret-down.svg"} />
+            </span>
+          </div>
+
+          <nav className={styles.nav}>
+            <div
+              className={`${styles.navItem} ${activeItem === "Dashboard" ? styles.active : ""}`}
+              onClick={() => setActiveItem("Dashboard")}
+            >
+              <span className={styles.icon}>
+                <img src={"/icons/home.svg"} />
+              </span>
+              <span>Dashboard</span>
+            </div>
+
+            {navigation.map((group) => (
+              <div key={group.title} className={styles.navGroup}>
+                <div className={styles.groupTitle}>{group.title}</div>
+                <div className={styles.groupItems}>
+                  {group.items.map((item) => (
+                    <div
+                      key={item.label}
+                      className={`${styles.navItem} ${activeItem === item.label ? styles.active : ""}`}
+                      onClick={() => {
+                        setActiveItem(item.label);
+                        onClose?.();
+                      }}
+                    >
+                      <span className={styles.icon}>
+                        <img src={item.icon} />
+                      </span>
+                      <span>{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </nav>
+        </div>
+      </aside>
+    </>
+  );
+}
