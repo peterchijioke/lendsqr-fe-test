@@ -3,10 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./filter-dropdown.module.scss";
+import { Organization } from "@/app/dashboard/users/page";
 
 interface FilterForm {
-  org: string;
-  username: string;
+  organization: string;
+  name: string;
   email: string;
   date: string;
   phone: string;
@@ -14,8 +15,8 @@ interface FilterForm {
 }
 
 const emptyFilter: FilterForm = {
-  org: "",
-  username: "",
+  organization: "",
+  name: "",
   email: "",
   date: "",
   phone: "",
@@ -24,6 +25,7 @@ const emptyFilter: FilterForm = {
 
 interface FilterDropdownProps {
   anchorEl: HTMLElement | null;
+  organizations: Organization[]
   onClose: () => void;
   onFilter: (f: FilterForm) => void;
 }
@@ -47,17 +49,17 @@ export default function FilterDropdown({
   anchorEl,
   onClose,
   onFilter,
+  organizations,
 }: FilterDropdownProps) {
   const [form, setForm] = useState<FilterForm>(emptyFilter);
   const ref = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile(); // Added
+  const isMobile = useIsMobile(); 
 
   const rect = anchorEl?.getBoundingClientRect();
   const top = rect ? rect.bottom + window.scrollY + 6 : 0;
-  // Clamp left so dropdown never overflows the right edge on any screen size
   const left = rect
     ? Math.min(
-        rect.left - 100, // 352px ≈ 22rem, 16px right margin
+        rect.left - 100, 
       )
     : 16;
 
@@ -75,7 +77,6 @@ export default function FilterDropdown({
     return () => document.removeEventListener("mousedown", handler);
   }, [onClose, anchorEl]);
 
-  // Added: lock body scroll when mobile sheet is open
   useEffect(() => {
     if (isMobile) {
       document.body.style.overflow = "hidden";
@@ -90,25 +91,22 @@ export default function FilterDropdown({
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  // Extracted shared fields so both layouts reuse them
   const fields = (
     <>
       <div className={styles.filterField}>
         <label>Organization</label>
-        <select value={form.org} onChange={set("org")}>
+        <select value={form.organization} onChange={set("organization")}>
           <option value="">Select</option>
-          <option value="Lendsqr">Lendsqr</option>
-          <option value="Irorun">Irorun</option>
-          <option value="Lendstar">Lendstar</option>
+          {organizations.map((org) => (
+            <option key={org.id} value={org.name}>
+              {org.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className={styles.filterField}>
         <label>Username</label>
-        <input
-          placeholder="User"
-          value={form.username}
-          onChange={set("username")}
-        />
+        <input placeholder="User" value={form.name} onChange={set("name")} />
       </div>
       <div className={styles.filterField}>
         <label>Email</label>
@@ -130,10 +128,10 @@ export default function FilterDropdown({
         <label>Status</label>
         <select value={form.status} onChange={set("status")}>
           <option value="">Select</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-          <option value="Pending">Pending</option>
-          <option value="Blacklisted">Blacklisted</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="pending">Pending</option>
+          <option value="blacklisted">Blacklisted</option>
         </select>
       </div>
       <div className={styles.filterActions}>
@@ -156,7 +154,6 @@ export default function FilterDropdown({
     </>
   );
 
-  // Added: mobile bottom sheet
   if (isMobile) {
     return createPortal(
       <div className={styles.mobileOverlay} onClick={onClose}>
@@ -183,7 +180,6 @@ export default function FilterDropdown({
     );
   }
 
-  // Original desktop dropdown — untouched
   const dropdown = (
     <div ref={ref} className={styles.filterDropdown} style={{ top, left }}>
       {fields}

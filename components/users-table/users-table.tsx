@@ -1,26 +1,51 @@
 "use client";
 
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useMemo } from "react";
 import styles from "./users-table.module.scss";
 import Table from "@/components/table";
 import MoreMenu from "@/components/more-menu/more-menu";
 import FilterDropdown from "@/components/filter-dropdown/filter-dropdown";
 import Pagination from "@/components/pagination";
 import { useRouter } from "next/navigation";
+import { Organization } from "@/app/dashboard/users/page";
+
+interface Personal {
+  phoneNumber: string;
+  emailAddress: string;
+  bvn: string;
+  gender: string;
+  maritalStatus: string;
+  children: string;
+  typeOfResidence: string;
+}
+
+interface Guarantor {
+  fullName: string;
+  phoneNumber: string;
+  relationship: string;
+}
 
 interface User {
   id: string;
-  org: string;
+  firstName: string;
+  lastName: string;
   username: string;
-  email: string;
-  phone: string;
-  joined: string;
-  status: "Active" | "Inactive" | "Pending" | "Blacklisted";
+  name: string;
+  organization: string;
+  tier: number;
+  balance: string;
+  accountNumber: string;
+  bankName: string;
+  status: "active" | "inactive" | "pending" | "blacklisted";
+  dateJoined: string;
+  avatar: null | string;
+  personal: Personal;
+  guarantors: Guarantor[];
 }
 
 interface FilterForm {
-  org: string;
-  username: string;
+  organization: string;
+  name: string;
   email: string;
   date: string;
   phone: string;
@@ -28,8 +53,8 @@ interface FilterForm {
 }
 
 const emptyFilter: FilterForm = {
-  org: "",
-  username: "",
+  organization: "",
+  name: "",
   email: "",
   date: "",
   phone: "",
@@ -38,54 +63,66 @@ const emptyFilter: FilterForm = {
 
 interface UsersTableProps {
   users: User[];
+  organizations: Organization[];
 }
 
 const COLUMNS = [
-  { key: "org", label: "ORGANIZATION" },
-  { key: "username", label: "USERNAME" },
+  { key: "organization", label: "ORGANIZATION" },
+  { key: "name", label: "USERNAME" },
   { key: "email", label: "EMAIL" },
   { key: "phone", label: "PHONE NUMBER" },
-  { key: "joined", label: "DATE JOINED" },
+  { key: "dateJoined", label: "DATE JOINED" },
   { key: "status", label: "STATUS" },
   { key: "actions", label: "" },
 ];
 
-export default function UsersTable({ users }: UsersTableProps) {
+export default function UsersTable({ users, organizations }: UsersTableProps) {
   const router = useRouter();
   const [openFilterColumn, setOpenFilterColumn] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterForm>(emptyFilter);
   const [openMoreIdx, setOpenMoreIdx] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(100);
+  const [perPage, setPerPage] = useState(10);
   const buttonRefs = useRef<Record<number, HTMLButtonElement>>({});
   const filterBtnRefs = useRef<Record<string, HTMLButtonElement>>({});
 
-  const filteredUsers = users.filter((u) => {
-    if (activeFilter.org && u.org !== activeFilter.org) return false;
-    if (
-      activeFilter.username &&
-      !u.username.toLowerCase().includes(activeFilter.username.toLowerCase())
-    )
-      return false;
-    if (
-      activeFilter.email &&
-      !u.email.toLowerCase().includes(activeFilter.email.toLowerCase())
-    )
-      return false;
-    if (activeFilter.phone && !u.phone.includes(activeFilter.phone))
-      return false;
-    if (activeFilter.status && u.status !== activeFilter.status) return false;
-    return true;
-  });
+  const filteredUsers = useMemo(() => {
+    return users.filter((u) => {
+      if (
+        activeFilter.organization &&
+        u.organization.toLowerCase() !== activeFilter.organization.toLowerCase()
+      )
+        return false;
+      if (
+        activeFilter.name &&
+        !u.name.toLowerCase().includes(activeFilter.name.toLowerCase())
+      )
+        return false;
+      if (
+        activeFilter.status &&
+        u.status.toLowerCase() !== activeFilter.status.toLowerCase()
+      )
+        return false;
+      return true;
+    });
+  }, [users, activeFilter]);
+
+  const totalItems = filteredUsers.length;
+  const startIndex = (currentPage - 1) * perPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + perPage);
 
   const getStatusBadgeClass = (status: User["status"]): string => {
     const statusClasses: Record<User["status"], string> = {
-      Active: styles["badge--Active"] || "",
-      Inactive: styles["badge--Inactive"] || "",
-      Pending: styles["badge--Pending"] || "",
-      Blacklisted: styles["badge--Blacklisted"] || "",
+      active: styles["badge--Active"] || "",
+      inactive: styles["badge--Inactive"] || "",
+      pending: styles["badge--Pending"] || "",
+      blacklisted: styles["badge--Blacklisted"] || "",
     };
     return statusClasses[status];
+  };
+
+  const formatStatus = (status: string): string => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -93,12 +130,13 @@ export default function UsersTable({ users }: UsersTableProps) {
       <div className={styles.tableContainer}>
         <Table
           columns={COLUMNS}
-          data={filteredUsers}
+          data={paginatedUsers}
           showFilterRow={openFilterColumn !== null}
           showCard={false}
           filterRowContent={
             openFilterColumn !== null ? (
               <FilterDropdown
+                organizations={organizations}
                 anchorEl={filterBtnRefs.current[openFilterColumn] ?? null}
                 onClose={() => setOpenFilterColumn(null)}
                 onFilter={(f) => setActiveFilter(f as FilterForm)}
@@ -107,14 +145,14 @@ export default function UsersTable({ users }: UsersTableProps) {
           }
           renderCell={(row, column) => {
             const user = row as unknown as User;
-            const idx = filteredUsers.indexOf(user);
+            const idx = paginatedUsers.indexOf(user);
 
             if (column.key === "status") {
               return (
                 <span
                   className={`${styles.badge} ${getStatusBadgeClass(user.status)}`}
                 >
-                  {user.status}
+                  {formatStatus(user.status)}
                 </span>
               );
             }
@@ -139,15 +177,21 @@ export default function UsersTable({ users }: UsersTableProps) {
                       anchorEl={buttonRefs.current[idx] ?? null}
                       onClose={() => setOpenMoreIdx(null)}
                       userId={user.id}
-                      onViewDetails={(userId) => router.push(`/dashboard/users/${userId}`)}
+                      onViewDetails={(userId) =>
+                        router.push(`/dashboard/users/${userId}`)
+                      }
                     />
                   )}
                 </div>
               );
             }
 
-            if (column.key === "username") return user.username;
-            if (column.key === "org") return user.org;
+            if (column.key === "name") return user.name;
+            if (column.key === "organization") return user.organization;
+            if (column.key === "dateJoined") return user.dateJoined;
+            if (column.key === "email")
+              return user.personal?.emailAddress || "";
+            if (column.key === "phone") return user.personal?.phoneNumber || "";
 
             return String(user[column.key as keyof User] ?? "");
           }}
@@ -156,15 +200,18 @@ export default function UsersTable({ users }: UsersTableProps) {
             return (
               <button
                 ref={(el) => {
-                  if (el && column.key === "org") filterBtnRefs.current[column.key] = el;
+                  if (el && column.key === "organization")
+                    filterBtnRefs.current[column.key] = el;
                 }}
                 type="button"
                 className={styles.filterIcon}
                 onMouseDown={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  if (column.key === "org") {
-                    setOpenFilterColumn((v) => (v === column.key ? null : column.key));
+                  if (column.key === "organization") {
+                    setOpenFilterColumn((v) =>
+                      v === column.key ? null : column.key,
+                    );
                   }
                 }}
               >
@@ -176,11 +223,18 @@ export default function UsersTable({ users }: UsersTableProps) {
       </div>
 
       <Pagination
-        totalItems={100}
+        totalItems={totalItems}
         initialPage={currentPage}
         initialPerPage={perPage}
-        onPageChange={setCurrentPage}
-        onPerPageChange={setPerPage}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+          setOpenMoreIdx(null);
+        }}
+        onPerPageChange={(perPageValue) => {
+          setPerPage(perPageValue);
+          setCurrentPage(1);
+          setOpenMoreIdx(null);
+        }}
       />
     </Fragment>
   );

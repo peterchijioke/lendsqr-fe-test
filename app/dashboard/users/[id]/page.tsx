@@ -1,98 +1,7 @@
 import UserDetailsClient from "@/components/user-details/user-details-client";
+import { userService } from "@/services/userService";
 
-interface PersonalInfo {
-  fullName: string;
-  phone: string;
-  email: string;
-  bvn: string;
-  gender: string;
-  maritalStatus: string;
-  children: string;
-  residenceType: string;
-}
 
-interface Employment {
-  education: string;
-  status: string;
-  sector: string;
-  duration: string;
-  officeEmail: string;
-  monthlyIncome: string;
-  loanRepayment: string;
-}
-
-interface Socials {
-  twitter: string;
-  facebook: string;
-  instagram: string;
-}
-
-interface Guarantor {
-  fullName: string;
-  phone: string;
-  email: string;
-  relationship: string;
-}
-
-interface User {
-  name: string;
-  id: string;
-  tier: number;
-  balance: string;
-  account: string;
-  personal: PersonalInfo;
-  employment: Employment;
-  socials: Socials;
-  guarantors: Guarantor[];
-}
-
-const USERS: Record<string, User> = {
-  "1": {
-    name: "Grace Effiom",
-    id: "LSQFf587g90",
-    tier: 2,
-    balance: "₦200,000.00",
-    account: "9912345678/Providus Bank",
-    personal: {
-      fullName: "Grace Effiom",
-      phone: "07060780922",
-      email: "grace@gmail.com",
-      bvn: "07060780922",
-      gender: "Female",
-      maritalStatus: "Single",
-      children: "None",
-      residenceType: "Parent's Apartment",
-    },
-    employment: {
-      education: "B.Sc",
-      status: "Employed",
-      sector: "FinTech",
-      duration: "2 years",
-      officeEmail: "grace@lendsqr.com",
-      monthlyIncome: "₦200,000.00– ₦400,000.00",
-      loanRepayment: "40,000",
-    },
-    socials: {
-      twitter: "@grace_effiom",
-      facebook: "Grace Effiom",
-      instagram: "@grace_effiom",
-    },
-    guarantors: [
-      {
-        fullName: "Debby Ogana",
-        phone: "07060780922",
-        email: "debby@gmail.com",
-        relationship: "Sister",
-      },
-      {
-        fullName: "Debby Ogana",
-        phone: "07060780922",
-        email: "debby@gmail.com",
-        relationship: "Sister",
-      },
-    ],
-  },
-};
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -100,7 +9,73 @@ interface PageProps {
 
 export default async function UserDetailsPage({ params }: PageProps) {
   const { id } = await params;
-  const user = USERS[id] || USERS["1"];
+  const user = await userService.getUser(id);
 
-  return <UserDetailsClient user={user} />;
+  if (!user) {
+    return (
+      <div style={{ padding: "2rem" }}>
+        <h1>User not found</h1>
+        <a href="/dashboard/users">Back to Users</a>
+      </div>
+    );
+  }
+
+  
+  const transformedUser = {
+    name: user.name,
+    id: user.id,
+    tier: user.tier,
+    balance: `₦${parseFloat(user.balance).toLocaleString("en-NG", { minimumFractionDigits: 2 })}`,
+    account: `${user.accountNumber}/${user.bankName}`,
+    personal: {
+      fullName: user.name,
+      phone: user.personal.phoneNumber,
+      email: user.personal.emailAddress,
+      bvn: user.personal.bvn,
+      gender: user.personal.gender,
+      maritalStatus: user.personal.maritalStatus,
+      children: user.personal.children,
+      residenceType: user.personal.typeOfResidence,
+    },
+    employment: user.education
+      ? {
+          education: user.education.levelOfEducation || "N/A",
+          status: user.education.employmentStatus || "N/A",
+          sector: user.education.sectorOfEmployment || "N/A",
+          duration: user.education.durationOfEmployment || "N/A",
+          officeEmail: user.education.officeEmail || "N/A",
+          monthlyIncome: typeof user.education.monthlyIncome === 'string' 
+            ? user.education.monthlyIncome 
+            : user.education.monthlyIncome 
+              ? `₦${user.education.monthlyIncome.min?.toLocaleString("en-NG")}– ₦${user.education.monthlyIncome.max?.toLocaleString("en-NG")}`
+              : "N/A",
+          loanRepayment: typeof user.education.loanRepayment === 'string'
+            ? user.education.loanRepayment
+            : user.education.loanRepayment
+              ? user.education.loanRepayment.toLocaleString("en-NG")
+              : "N/A",
+        }
+      : {
+          education: "N/A",
+          status: "N/A",
+          sector: "N/A",
+          duration: "N/A",
+          officeEmail: "N/A",
+          monthlyIncome: "N/A",
+          loanRepayment: "N/A",
+        },
+    socials: user.socials || {
+      twitter: "N/A",
+      facebook: "N/A",
+      instagram: "N/A",
+    },
+    guarantors: user.guarantors.map((g) => ({
+      fullName: g.fullName,
+      phone: g.phoneNumber,
+      email: g.emailAddress || "N/A",
+      relationship: g.relationship,
+    })),
+  };
+
+  return <UserDetailsClient user={transformedUser} />;
 }

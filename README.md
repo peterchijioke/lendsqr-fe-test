@@ -7,8 +7,6 @@ A modern web application built with Next.js for managing users, loans, and finan
 - **Framework:** Next.js 16.1.7
 - **UI Library:** React 19.2.3
 - **Styling:** SCSS Modules + Tailwind CSS 4
-- **Form Management:** React Hook Form 7.71.2
-- **Validation:** Zod 4.3.6
 - **Language:** TypeScript 5
 
 ## Project Structure
@@ -65,7 +63,7 @@ lendsqr/
 ### Authentication
 - Login page with form validation
 - Email and password authentication
-- Form error handling with Zod validation
+- Native form validation
 
 ### Dashboard
 - Overview statistics display

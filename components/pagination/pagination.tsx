@@ -35,6 +35,44 @@ export default function Pagination({
     onPerPageChange?.(newPerPage);
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      if (page > 3) {
+        pages.push('...');
+      }
+      
+      const start = Math.max(2, page - 1);
+      const end = Math.min(totalPages - 1, page + 1);
+      
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) {
+          pages.push(i);
+        }
+      }
+      
+      if (page < totalPages - 2) {
+        pages.push('...');
+      }
+      
+      if (!pages.includes(totalPages)) {
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
+
   return (
     <div className={styles.pagination}>
       <div className={styles.perPage}>
@@ -60,24 +98,18 @@ export default function Pagination({
         >
           <img src="/icons/caret-left.svg" alt="prev" />
         </button>
-        {[1, 2, 3].map((p) => (
-          <button
-            key={p}
-            onClick={() => handlePageChange(p)}
-            className={`${styles.pageBtn} ${page === p ? styles.pageBtnActive : ""}`}
-          >
-            {p}
-          </button>
-        ))}
-        <span className={styles.ellipsis}>...</span>
-        {[totalPages - 1, totalPages].map((p) => (
-          <button
-            key={p}
-            onClick={() => handlePageChange(p)}
-            className={`${styles.pageBtn} ${page === p ? styles.pageBtnActive : ""}`}
-          >
-            {p}
-          </button>
+        {pageNumbers.map((p, idx) => (
+          typeof p === 'number' ? (
+            <button
+              key={idx}
+              onClick={() => handlePageChange(p)}
+              className={`${styles.pageBtn} ${page === p ? styles.pageBtnActive : ""}`}
+            >
+              {p}
+            </button>
+          ) : (
+            <span key={idx} className={styles.ellipsis}>{p}</span>
+          )
         ))}
         <button
           className={styles.pageBtn}

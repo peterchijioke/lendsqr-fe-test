@@ -5,6 +5,7 @@ import styles from "./user-details-client.module.scss";
 import ProfileCard from "../profile-card";
 import DetailCard from "../detail-card";
 
+
 interface PersonalInfo {
   fullName: string;
   phone: string;

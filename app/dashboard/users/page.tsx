@@ -1,14 +1,54 @@
+import { userService } from "@/services/userService";
 import styles from "./users.module.scss";
 import UsersTable from "@/components/users-table";
 
+interface Personal {
+  phoneNumber: string;
+  emailAddress: string;
+  bvn: string;
+  gender: string;
+  maritalStatus: string;
+  children: string;
+  typeOfResidence: string;
+}
+
+interface Guarantor {
+  fullName: string;
+  phoneNumber: string;
+  relationship: string;
+}
+
 interface User {
   id: string;
-  org: string;
+  firstName: string;
+  lastName: string;
   username: string;
-  email: string;
-  phone: string;
-  joined: string;
-  status: "Active" | "Inactive" | "Pending" | "Blacklisted";
+  name: string;
+  organization: string;
+  tier: number;
+  balance: string;
+  accountNumber: string;
+  bankName: string;
+  status: "active" | "inactive" | "pending" | "blacklisted";
+  dateJoined: string;
+  avatar: null | string;
+  personal: Personal;
+  guarantors: Guarantor[];
+}
+
+export interface UsersResponse {
+  data: User[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+export interface Organization {
+  id: number;
+  name: string;
 }
 
 export const metadata = {
@@ -16,135 +56,97 @@ export const metadata = {
   description: "Manage and view all users in the Lendsqr platform",
 };
 
-
-const USERS: User[] = [
-  {
-    id: "1",
-    org: "Lendsqr",
-    username: "Adedeji",
-    email: "adedeji@lendsqr.com",
-    phone: "08078903721",
-    joined: "May 15, 2020 10:00 AM",
-    status: "Inactive",
-  },
-  {
-    id: "2",
-    org: "Irorun",
-    username: "Debby Ogana",
-    email: "debby2@irorun.com",
-    phone: "08160780928",
-    joined: "Apr 30, 2020 10:00 AM",
-    status: "Pending",
-  },
-  {
-    id: "3",
-    org: "Lendstar",
-    username: "Grace Effiom",
-    email: "grace@lendstar.com",
-    phone: "07060780922",
-    joined: "Apr 30, 2020 10:00 AM",
-    status: "Blacklisted",
-  },
-  {
-    id: "4",
-    org: "Lendsqr",
-    username: "Tosin Dokunmu",
-    email: "tosin@lendsqr.com",
-    phone: "07003309226",
-    joined: "Apr 10, 2020 10:00 AM",
-    status: "Pending",
-  },
-  {
-    id: "5",
-    org: "Lendstar",
-    username: "Grace Effiom",
-    email: "grace@lendstar.com",
-    phone: "07060780922",
-    joined: "Apr 30, 2020 10:00 AM",
-    status: "Active",
-  },
-  {
-    id: "6",
-    org: "Lendsqr",
-    username: "Tosin Dokunmu",
-    email: "tosin@lendsqr.com",
-    phone: "08060780900",
-    joined: "Apr 10, 2020 10:00 AM",
-    status: "Active",
-  },
-  {
-    id: "7",
-    org: "Lendstar",
-    username: "Grace Effiom",
-    email: "grace@lendstar.com",
-    phone: "07060780922",
-    joined: "Apr 30, 2020 10:00 AM",
-    status: "Blacklisted",
-  },
-  {
-    id: "8",
-    org: "Lendsqr",
-    username: "Tosin Dokunmu",
-    email: "tosin@lendsqr.com",
-    phone: "08060780900",
-    joined: "Apr 10, 2020 10:00 AM",
-    status: "Inactive",
-  },
-  {
-    id: "9",
-    org: "Lendstar",
-    username: "Grace Effiom",
-    email: "grace@lendstar.com",
-    phone: "07060780922",
-    joined: "Apr 30, 2020 10:00 AM",
-    status: "Inactive",
-  },
-];
-
 const STATS = [
   {
     label: "USERS",
     value: "2,453",
     icon: "/icons/users-dashboad.svg",
     variant: "pink",
+    transform: "",
   },
   {
     label: "ACTIVE USERS",
     value: "2,453",
     icon: "/icons/active-users.svg",
     variant: "purple",
+    transform: "percentage",
   },
   {
     label: "USERS WITH LOANS",
     value: "12,453",
     icon: "/icons/users-with-loan.svg",
     variant: "orange",
+    transform: "currency",
   },
   {
     label: "USERS WITH SAVINGS",
     value: "102,453",
     icon: "/icons/users-with-savings.svg",
     variant: "red",
+    transform: "compact",
   },
 ];
 
+
+
+export interface Organization {
+  id: number;
+  name: string;
+}
+
+export interface OrganizationsResponse {
+  data: Organization[];
+}
+
+
+
+function transformValue(value: string, transform?: string): string {
+  switch (transform) {
+    case "percentage":
+      return `${value}%`;
+    case "currency":
+      return `${value}`;
+    case "compact":
+      const num = parseFloat(value.replace(/,/g, ""));
+      if (num >= 1000) {
+        return `${(num / 1000).toFixed(1)}K`;
+      }
+      return value;
+    default:
+      return value;
+  }
+}
+
 export default async function UsersPage() {
+  const users = await userService.getUsers();
+  const organizations = await userService.getOrganizations();
+  const apiStats = await userService.getDashboardStats();
+  
+  // Merge API stats with STATS to get icon, variant, and transform
+  const dashboardState = apiStats.length > 0 
+    ? apiStats.map((stat, index) => ({
+        ...stat,
+        icon: STATS[index]?.icon || "",
+        variant: STATS[index]?.variant || "pink",
+        transform: STATS[index]?.transform || "",
+      }))
+    : STATS;
 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Users</h1>
 
       <div className={styles.statsGrid}>
-        {STATS.map(({ label, value, icon }) => (
+        {dashboardState.map(({ label, value, icon, transform }) => (
           <div key={label} className={styles.statCard}>
             <img src={icon} alt={label} />
             <p className={styles.statLabel}>{label}</p>
-            <p className={styles.statValue}>{value}</p>
+            <p className={styles.statValue}>{transformValue(value, transform)}</p>
           </div>
         ))}
       </div>
 
-      <UsersTable users={USERS} />
+      <UsersTable organizations={organizations} users={users} />
     </div>
   );
 }

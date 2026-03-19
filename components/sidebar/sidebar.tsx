@@ -8,7 +8,7 @@ import { getActiveLabel, isActivePath } from "./sidebar-utils";
 interface NavItem {
   label: string;
   icon: string;
-  path?:string;
+  path?: string;
 }
 
 interface NavGroup {
@@ -25,10 +25,7 @@ const navigation: NavGroup[] = [
         path: "/dashboard/users",
         icon: "/icons/user-friends.svg",
       },
-      {
-        label: "Guarantors",
-        icon: "/icons/users.svg",
-      },
+      { label: "Guarantors", icon: "/icons/users.svg" },
       { label: "Loans", icon: "/icons/sack.svg" },
       { label: "Decision Models", icon: "/icons/handshake-regular.svg" },
       { label: "Savings", icon: "/icons/piggy-bank.svg" },
@@ -57,6 +54,7 @@ const navigation: NavGroup[] = [
       { label: "Preferences", icon: "/icons/preference.svg" },
       { label: "Fees and Pricing", icon: "/icons/fee-pricing.svg" },
       { label: "Audit Logs", icon: "/icons/audit-logs.svg" },
+      { label: "Systems Messages", icon: "/icons/system-message.svg" },
     ],
   },
 ];
@@ -70,6 +68,11 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
   const activeItem = getActiveLabel(pathname);
   const router = useRouter();
+
+  const handleLogout = () => {
+    // handle logout logic here
+    router.push("/login");
+  };
 
   return (
     <>
@@ -125,6 +128,20 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
               </div>
             ))}
           </nav>
+
+          {/* Bottom Section */}
+          <div className={styles.sidebarBottom}>
+            <div className={styles.bottomDivider} />
+
+            <div className={styles.navItem} onClick={handleLogout}>
+              <span className={styles.icon}>
+                <img src={"/icons/sign-out.svg"} />
+              </span>
+              <span>Logout</span>
+            </div>
+
+            <p className={styles.version}>v1.2.0</p>
+          </div>
         </div>
       </aside>
     </>
