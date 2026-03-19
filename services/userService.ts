@@ -56,7 +56,7 @@ export interface User {
   guarantors: Guarantor[];
 }
 
-export const API_URL = process.env.API_URL ;
+
 
 export interface Stat {
   label: string;
@@ -70,82 +70,86 @@ export interface StatsResponse {
   data: Stat[];
 }
 
+const getApiUrl = () => {
+  return process.env.NEXT_PUBLIC_API_URL || '';
+};
+
 
 
 export const userService = {
 
- getUser:async (id: string): Promise<User | null> =>{
-   try {
-     const res = await fetch(`${API_URL}/api/users/${id}`, {
-       cache: "no-store",
-     });
+  getUser:async (id: string): Promise<User | null> =>{
+    try {
+      const res = await fetch(`${getApiUrl()}/api/users/${id}`, {
+        cache: "no-store",
+      });
 
-     if (!res.ok) {
-       if (res.status === 404) {
-         return null;
-       }
-       throw new Error("Failed to fetch user");
-     }
+      if (!res.ok) {
+        if (res.status === 404) {
+          return null;
+        }
+        throw new Error("Failed to fetch user");
+      }
 
-     const response = await res.json();
-     return response.data;
-   } catch (error) {
-     console.error("Error fetching user:", error);
-     return null;
-   }
- },
- getUsers:async(): Promise<User[]>=> {
-   try {
-     const res = await fetch(`${API_URL}/api/users?limit=500`, {
-       cache: 'no-store',
-     });
-     
-     if (!res.ok) {
-       throw new Error('Failed to fetch users');
-     }
-     
-     const response: UsersResponse = await res.json();
-     return response.data;
-   } catch (error) {
-     console.error('Error fetching users:', error);
-     return [];
-   }
- },
- getOrganizations:async(): Promise<Organization[]>=> {
-   try {
-     const res = await fetch(
-       `${API_URL}/api/organisations`,
-       {
-         cache: "no-store",
-       },
-     );
+      const response = await res.json();
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return null;
+    }
+  },
+  getUsers:async(): Promise<User[]>=> {
+    try {
+      const res = await fetch(`${getApiUrl()}/api/users?limit=500`, {
+        cache: 'no-store',
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      
+      const response: UsersResponse = await res.json();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  },
+  getOrganizations:async(): Promise<Organization[]>=> {
+    try {
+      const res = await fetch(
+        `${getApiUrl()}/api/organisations`,
+        {
+          cache: "no-store",
+        },
+      );
 
-     if (!res.ok) {
-       throw new Error("Failed to fetch organisations");
-     }
+      if (!res.ok) {
+        throw new Error("Failed to fetch organisations");
+      }
 
-     const response: OrganizationsResponse = await res.json();
-     return response.data;
-   } catch (error) {
-     console.error("Error fetching organizations:", error);
-     return [];
-   }
- },
- getDashboardStats:async(): Promise<Stat[]>=> {
-   try {
-     const res = await fetch(`${API_URL}/api/stats`, {
-       cache: 'no-store',
-     });
-     
-     if (!res.ok) {
-       throw new Error('Failed to fetch stats');
-     }
-     
-     const response: StatsResponse = await res.json();
-     return response.data;
-   } catch (error) {
-     console.error('Error fetching stats:', error);
-     return [];
-   }
- }
+      const response: OrganizationsResponse = await res.json();
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching organizations:", error);
+      return [];
+    }
+  },
+  getDashboardStats:async(): Promise<Stat[]>=> {
+    try {
+      const res = await fetch(`${getApiUrl()}/api/stats`, {
+        cache: 'no-store',
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to fetch stats');
+      }
+      
+      const response: StatsResponse = await res.json();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      return [];
+    }
+  }
 }
