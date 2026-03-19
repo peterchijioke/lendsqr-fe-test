@@ -105,6 +105,10 @@ export default function DetailCard({
             <span className={styles.fieldValue}>{employment.status}</span>
           </div>
           <div className={styles.field}>
+            <span className={styles.fieldLabel}>Monthly Income</span>
+            <span className={styles.fieldValue}>{employment.monthlyIncome}</span>
+          </div>
+          <div className={styles.field}>
             <span className={styles.fieldLabel}>Sector of Employment</span>
             <span className={styles.fieldValue}>{employment.sector}</span>
           </div>
@@ -117,10 +121,6 @@ export default function DetailCard({
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Office Email</span>
             <span className={styles.fieldValue}>{employment.officeEmail}</span>
-          </div>
-          <div className={styles.field}>
-            <span className={styles.fieldLabel}>Monthly Income</span>
-            <span className={styles.fieldValue}>{employment.monthlyIncome}</span>
           </div>
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Loan Repayment</span>

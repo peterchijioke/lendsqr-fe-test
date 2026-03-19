@@ -103,6 +103,8 @@ $border-radius-card: 8px;
   font-weight: 500;
   color: $navy;
   line-height: 1.4;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .emptyState {
