@@ -50,11 +50,14 @@ lendsqr/
 ├── public/                       # Static assets
 │   ├── icons/                    # SVG icon assets
 │   └── login/                    # Login page assets
+├── styles/                       # Global styles
+│   └── _variables.scss          # Design system variables
+├── data/                         # Mock data
+│   └── mock-users.json          # User mock data (500 records)
 └── Configuration files
     ├── next.config.ts
     ├── tsconfig.json
     ├── eslint.config.mjs
-    ├── postcss.config.mjs
     └── package.json
 ```
 
@@ -328,6 +331,23 @@ Note: Some fields vary between records (e.g., some have `maritalStatus` or `gend
 ## Styling
 
 This project uses **SCSS Modules** for component-scoped styles (`.module.scss` files).
+
+### Design System Variables
+
+The project includes a centralized design system in `styles/_variables.scss` with:
+
+- **Colors:** Brand colors (teal, navy), neutral colors, text colors, status colors
+- **Typography:** Font family (Work Sans), font sizes, font weights
+- **Spacing:** Spacing scale from xs to 3xl
+- **Border Radius:** Small, medium, large, extra large, and full radius values
+- **Shadows:** Small to extra large shadow presets
+- **Transitions:** Fast, base, and slow transition timings
+- **Layout:** Sidebar width, header height values
+
+Components import these variables using:
+```scss
+@use '../../styles/variables' as *;
+```
 
 ## Bug Fixes
 
