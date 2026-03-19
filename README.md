@@ -149,12 +149,44 @@ Create a `.env.local` file in the root directory for any required environment va
 
 ## API Routes
 
+- `/api/login` - User login
 - `/api/stats` - Dashboard statistics
 - `/api/users` - Users list with filtering
 - `/api/users/[id]` - Individual user details
 - `/api/organisations` - Organizations list
 
 ## API Endpoints
+
+### Login API
+
+```
+POST /api/login
+```
+
+Authenticates a user and returns access token with user profile.
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "user": {
+      "id": "65f02d6c9d92",
+      "firstName": "Akpan",
+      "lastName": "Okon",
+      "username": "admin_admin",
+      "email": "okon@sqr.com",
+      "organization": "LendSqr",
+      "tier": 2,
+      "accountNumber": "1029384756",
+      "bankName": "GTBank",
+      "status": "active"
+    },
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.payload.signature"
+  }
+}
+```
 
 ### Stats API
 
