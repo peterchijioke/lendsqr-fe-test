@@ -128,7 +128,6 @@ export default async function UsersPage({
   const organizations = await userService.getOrganizations();
   const apiStats = await userService.getDashboardStats();
   
-  // Merge API stats with STATS to get icon, variant, and transform
   const dashboardState = apiStats.length > 0 
     ? apiStats.map((stat, index) => ({
         ...stat,
