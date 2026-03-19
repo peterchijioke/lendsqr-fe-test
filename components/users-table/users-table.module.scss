@@ -1,10 +1,8 @@
-$primary: #213f7d;
-$muted: #545f7d;
-$border: #f0f0f0;
+@use '../../styles/variables' as *;
 
 .tableContainer {
-  background: #ffffff;
-  border-radius: 0.75rem;
+  background: $white;
+ border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   overflow-x: hidden;
   overflow-y: visible;
@@ -26,23 +24,23 @@ $border: #f0f0f0;
   font-weight: 500;
 
   &--Active {
-    background: #e5f7ee;
-    color: #39cd62;
+    background: $status-active-bg;
+    color: $status-active-text;
   }
 
   &--Inactive {
-    background: #f0f0f0;
-    color: #545f7d;
+    background: $status-inactive-bg;
+    color: $status-inactive-text;
   }
 
   &--Pending {
-    background: #fdf4e7;
-    color: #e9b200;
+    background: $status-pending-bg;
+    color: $status-pending-text;
   }
 
   &--Blacklisted {
-    background: #fce8e8;
-    color: #e4033b;
+    background: $status-blacklisted-bg;
+    color: $status-blacklisted-text;
   }
 }
 
@@ -62,7 +60,7 @@ $border: #f0f0f0;
   justify-content: center;
   transition: opacity 0.15s;
   border-radius: 4px;
-  color: $muted;
+  color: $text-secondary;
   background: none;
   border: none;
   padding: 0;
@@ -80,7 +78,7 @@ $border: #f0f0f0;
 
 .td {
   padding: 1rem 1.5rem;
-  color: $muted;
+  color: $text-secondary;
   white-space: nowrap;
 }
 
@@ -93,11 +91,11 @@ $border: #f0f0f0;
   border: none;
   cursor: pointer;
   padding: 0.25rem;
-  color: #b0b0b0;
+  color: $text-placeholder;
   transition: color 0.15s ease;
 
   &:hover {
-    color: $muted;
+    color: $text-secondary;
   }
 
   img {
@@ -127,16 +125,16 @@ $border: #f0f0f0;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: $muted;
+  color: $text-secondary;
 }
 
 .perPageSelect {
-  border: 1px solid #e0e0e0;
+  border: 1px solid $border;
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
   font-size: 0.875rem;
   background: #f9f9f9;
-  color: $primary;
+  color: $navy;
   font-weight: 600;
   cursor: pointer;
 
@@ -160,7 +158,7 @@ $border: #f0f0f0;
   background: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: $muted;
+  color: $text-secondary;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -168,15 +166,15 @@ $border: #f0f0f0;
   transition: background 0.15s ease;
 
   &:hover {
-    background: #f0f0f0;
+    background: $border-light;
   }
 
   &--active {
-    background: $primary;
-    color: #ffffff;
+    background: $navy;
+    color: $white;
 
     &:hover {
-      background: darken($primary, 5%);
+      background: darken($navy, 5%);
     }
   }
 
@@ -188,6 +186,6 @@ $border: #f0f0f0;
 
 .ellipsis {
   padding: 0 0.25rem;
-  color: #b0b0b0;
+  color: $text-placeholder;
   font-size: 0.875rem;
 }

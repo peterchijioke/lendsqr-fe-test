@@ -1,6 +1,4 @@
-$primary: #213f7d;
-$muted: #545f7d;
-$border: #f0f0f0;
+@use '../../styles/variables' as *;
 
 .pagination {
   display: flex;
@@ -25,7 +23,7 @@ $border: #f0f0f0;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: $muted;
+  color: $text-secondary;
   flex-wrap: wrap;
 
   @media (max-width: 480px) {
@@ -35,12 +33,12 @@ $border: #f0f0f0;
 }
 
 .perPageSelect {
-  border: 1px solid #e0e0e0;
+  border: 1px solid $border;
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
   font-size: 0.875rem;
-  background: #f9f9f9;
-  color: $primary;
+  background: #213F7D1A;
+  color: $navy;
   font-weight: 600;
   cursor: pointer;
 
@@ -75,7 +73,7 @@ $border: #f0f0f0;
   background: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: $muted;
+  color: $text-secondary;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -83,7 +81,7 @@ $border: #f0f0f0;
   transition: background 0.15s ease;
 
   &:hover:not(:disabled) {
-    background: #f0f0f0;
+    background: $border-light;
   }
 
   &:disabled {
@@ -92,11 +90,11 @@ $border: #f0f0f0;
   }
 
   &Active {
-    background: $primary;
-    color: #ffffff;
+    background: $navy;
+    color: $white;
 
     &:hover {
-      background: darken($primary, 5%);
+      background: darken($navy, 5%);
     }
   }
 
@@ -119,7 +117,7 @@ $border: #f0f0f0;
 
 .ellipsis {
   padding: 0 0.25rem;
-  color: #b0b0b0;
+  color: $text-placeholder;
   font-size: 0.875rem;
 
   @media (max-width: 480px) {

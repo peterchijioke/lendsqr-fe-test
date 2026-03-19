@@ -110,7 +110,12 @@ export default function FilterDropdown({
       </div>
       <div className={styles.filterField}>
         <label>Email</label>
-        <input placeholder="Email" value={form.email} onChange={set("email")} />
+        <input
+         
+          placeholder="Email"
+          value={form.email}
+          onChange={set("email")}
+        />
       </div>
       <div className={styles.filterField}>
         <label>Date</label>

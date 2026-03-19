@@ -1,13 +1,4 @@
-$teal: #39CDCC;
-$teal-dark: #2BB7B7;
-$navy: #213F7D;
-$navy-light: #545F7D;
-$border: #E0E0E0;
-$input-bg: #FFFFFF;
-$white: #FFFFFF;
-$error: #E4033B;
-$radius-sm: 4px;
-$transition: 0.2s ease;
+@use '../../styles/variables' as *;
 
 .loginForm {
   display: flex;
@@ -30,7 +21,7 @@ $transition: 0.2s ease;
   width: 100%;
   height: 50px;
   padding: 0 16px;
-  background: $input-bg;
+  background: $white;
   border: 1px solid $border;
   border-radius: $radius-sm;
   font-family: inherit;
@@ -40,7 +31,7 @@ $transition: 0.2s ease;
   transition: border-color $transition, box-shadow $transition;
 
   &::placeholder {
-    color: #c4c4c4;
+    color: $text-muted;
   }
 
   &:focus {

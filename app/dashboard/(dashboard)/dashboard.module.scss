@@ -1,9 +1,4 @@
-$teal: #39CDCC;
-$navy: #213F7D;
-$navy-light: #545F7D;
-$border: #E0E0E0;
-$white: #FFFFFF;
-$transition: 0.2s ease;
+@use '../../../styles/variables' as *;
 
 .pageTitle {
   font-size: 28px;
@@ -125,12 +120,12 @@ $transition: 0.2s ease;
   font-weight: 500;
 
   &.active {
-    background: rgba($teal, 0.15);
+    background: $teal-light;
     color: $teal;
   }
 
   &.inactive {
-    background: rgba(#545F7D, 0.15);
+    background: rgba($navy-light, 0.15);
     color: $navy-light;
   }
 }

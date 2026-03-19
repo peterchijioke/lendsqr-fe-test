@@ -1,22 +1,5 @@
 
-$teal:        #39CDCC;
-$teal-dark:   #2BB7B7;
-$navy:        #213F7D;
-$navy-light:  #545F7D;
-$border:      #E0E0E0;
-$input-bg:    #FFFFFF;
-$page-bg:     #FBFBFB;
-$white:       #FFFFFF;
-$error:       #E4033B;
-$radius-sm:   4px;
-$transition:  0.2s ease;
-
-
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+@use '../../styles/variables' as *;
 
 
 :global(*),
@@ -32,7 +15,7 @@ $transition:  0.2s ease;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
   font-family: var(--font-work-sans), sans-serif;
-  background-color: $page-bg;
+  background-color: $bg;
   color: $navy;
   -webkit-font-smoothing: antialiased;
 
@@ -164,6 +147,6 @@ $transition:  0.2s ease;
 .loginSubtitle {
   font-size: 16px;
   font-weight: 400;
-  color: $navy-light;
+  color: $text-secondary;
   margin-bottom: 40px;
 }

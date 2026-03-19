@@ -1,8 +1,6 @@
-$color-primary: #213f7d;
-$color-card: #ffffff;
-$color-border: #e5e5e5;
-$color-text-light: #9ba6bc;
+@use '../../../styles/variables' as *;
 
+// Custom shadows and radius for this component
 $shadow-card: 0px 4px 20px rgba(0, 0, 0, 0.06);
 $border-radius-card: 8px;
 
@@ -18,7 +16,7 @@ $border-radius-card: 8px;
 }
 
 .detailCard {
-  background: $color-card;
+  background: $white;
   border-radius: $border-radius-card;
   box-shadow: $shadow-card;
   padding: 32px;
@@ -51,19 +49,19 @@ $border-radius-card: 8px;
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  color: $color-primary;
+  color: $navy;
   margin: 0 0 24px;
 }
 
 .sectionDivider {
   height: 1px;
-  background: $color-border;
+  background: $border;
   margin: 8px 0 28px;
 }
 
 .guarantorDivider {
   height: 1px;
-  background: $color-border;
+  background: $border;
   margin: 24px 0;
 }
 
@@ -95,7 +93,7 @@ $border-radius-card: 8px;
 .fieldLabel {
   font-size: 11px;
   font-weight: 500;
-  color: $color-text-light;
+  color: $text-placeholder;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -103,7 +101,7 @@ $border-radius-card: 8px;
 .fieldValue {
   font-size: 14px;
   font-weight: 500;
-  color: $color-primary;
+  color: $navy;
   line-height: 1.4;
 }
 
@@ -112,6 +110,6 @@ $border-radius-card: 8px;
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  color: $color-text-light;
+  color: $text-placeholder;
   font-size: 14px;
 }

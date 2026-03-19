@@ -1,9 +1,9 @@
-$page-bg: #F5F5F5;
+@use '../../styles/variables' as *;
 
 .dashboard {
   display: flex;
   min-height: 100vh;
-  background: $page-bg;
+  background: $bg;
 }
 
 .mainContent {
@@ -24,7 +24,7 @@ $page-bg: #F5F5F5;
 }
 
 .content {
-  padding: 1rem;
+  padding: 2rem;
   flex: 1;
   margin-top: 72px;
   overflow-x: hidden;

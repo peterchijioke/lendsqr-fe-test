@@ -1,18 +1,4 @@
-$primary: #213f7d;
-$muted: #545f7d;
-$bg: #f5f5f5;
-$white: #ffffff;
-$border: #f0f0f0;
-$hover-row: #fafafa;
-
-$status-active-bg: #e5f7ee;
-$status-active-text: #39cd62;
-$status-inactive-bg: #f0f0f0;
-$status-inactive-text: #545f7d;
-$status-pending-bg: #fdf4e7;
-$status-pending-text: #e9b200;
-$status-blacklisted-bg: #fce8e8;
-$status-blacklisted-text: #e4033b;
+@use '../../../styles/variables' as *;
 
 .page {
   min-height: 100vh;
@@ -25,7 +11,7 @@ $status-blacklisted-text: #e4033b;
 .title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: $primary;
+  color: $navy;
   margin-bottom: 2rem;
 }
 
@@ -46,7 +32,7 @@ $status-blacklisted-text: #e4033b;
 
 .statCard {
   background: $white;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
@@ -74,7 +60,7 @@ $status-blacklisted-text: #e4033b;
 .statLabel {
   font-size: 0.7rem;
   font-weight: 600;
-  color: $muted;
+  color: $text-secondary;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 0.5rem;
@@ -83,7 +69,7 @@ $status-blacklisted-text: #e4033b;
 .statValue {
   font-size: 1.5rem;
   font-weight: 700;
-  color: $primary;
+  color: $navy;
 }
 
 .tableCard {
@@ -110,7 +96,7 @@ $status-blacklisted-text: #e4033b;
   padding: 1rem 1.5rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: $muted;
+  color: $text-secondary;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   white-space: nowrap;
@@ -138,7 +124,7 @@ $status-blacklisted-text: #e4033b;
   justify-content: center;
   transition: opacity 0.15s;
   border-radius: 4px;
-  color: $muted;
+  color: $text-secondary;
   background: none;
   border: none;
   padding: 0;
@@ -182,7 +168,7 @@ $status-blacklisted-text: #e4033b;
 
 .td {
   padding: 1rem 1.5rem;
-  color: $muted;
+  color: $text-secondary;
   white-space: nowrap;
 }
 
@@ -220,11 +206,11 @@ $status-blacklisted-text: #e4033b;
   border: none;
   cursor: pointer;
   padding: 0.25rem;
-  color: #b0b0b0;
+  color: $text-placeholder;
   transition: color 0.15s ease;
 
   &:hover {
-    color: $muted;
+    color: $text-secondary;
   }
 
   img {
@@ -248,16 +234,16 @@ $status-blacklisted-text: #e4033b;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: $muted;
+  color: $text-secondary;
 }
 
 .perPageSelect {
-  border: 1px solid #e0e0e0;
+  border: 1px solid $border;
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
   font-size: 0.875rem;
   background: #f9f9f9;
-  color: $primary;
+  color: $navy;
   font-weight: 600;
   cursor: pointer;
 
@@ -281,7 +267,7 @@ $status-blacklisted-text: #e4033b;
   background: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: $muted;
+  color: $text-secondary;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -289,15 +275,15 @@ $status-blacklisted-text: #e4033b;
   transition: background 0.15s ease;
 
   &:hover {
-    background: #f0f0f0;
+    background: $border-light;
   }
 
   &--active {
-    background: $primary;
+    background: $navy;
     color: $white;
 
     &:hover {
-      background: darken($primary, 5%);
+      background: darken($navy, 5%);
     }
   }
 
@@ -309,7 +295,7 @@ $status-blacklisted-text: #e4033b;
 
 .ellipsis {
   padding: 0 0.25rem;
-  color: #b0b0b0;
+  color: $text-placeholder;
   font-size: 0.875rem;
 }
 
@@ -340,27 +326,27 @@ $status-blacklisted-text: #e4033b;
   label {
     font-size: 0.8rem;
     font-weight: 500;
-    color: $primary;
+    color: $navy;
   }
 
   input,
   select {
-    border: 1px solid #c5c5c5;
+    border: 1px solid $text-muted;
     border-radius: 0.375rem;
     padding: 0.55rem 0.75rem;
     font-size: 0.875rem;
-    color: $muted;
+    color: $text-secondary;
     background: $white;
     outline: none;
     appearance: none;
     width: 100%;
 
     &:focus {
-      border-color: $primary;
+      border-color: $navy;
     }
 
     &::placeholder {
-      color: #c5c5c5;
+      color: $text-muted;
     }
   }
 
@@ -382,16 +368,16 @@ $status-blacklisted-text: #e4033b;
   flex: 1;
   padding: 0.6rem 1rem;
   border-radius: 2rem;
-  border: 1px solid $primary;
+  border: 1px solid $navy;
   background: $white;
-  color: $primary;
+  color: $navy;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
 
   &:hover {
-    background: lighten($primary, 55%);
+    background: lighten($navy, 55%);
   }
 }
 
@@ -400,7 +386,7 @@ $status-blacklisted-text: #e4033b;
   padding: 0.6rem 1rem;
   border-radius: 2rem;
   border: none;
-  background: #39cdcc;
+  background: $teal;
   color: $white;
   font-size: 0.875rem;
   font-weight: 600;
@@ -408,7 +394,7 @@ $status-blacklisted-text: #e4033b;
   transition: background 0.15s;
 
   &:hover {
-    background: darken(#39cdcc, 8%);
+    background: darken($teal, 8%);
   }
 }
 
@@ -444,7 +430,7 @@ $status-blacklisted-text: #e4033b;
   background: none;
   border: none;
   font-size: 0.875rem;
-  color: $muted;
+  color: $text-secondary;
   cursor: pointer;
   text-align: left;
   transition: background 0.12s;
@@ -457,6 +443,6 @@ $status-blacklisted-text: #e4033b;
 
   &:hover {
     background: $bg;
-    color: $primary;
+    color: $navy;
   }
 }

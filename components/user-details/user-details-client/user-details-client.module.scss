@@ -1,9 +1,4 @@
-$color-primary: #213f7d;
-$color-accent: #39cdcc;
-$color-danger: #e4033b;
-$color-text-main: #213f7d;
-$color-text-muted: #545f7d;
-$color-bg: #fbfbfb;
+@use '../../../styles/variables' as *;
 
 @keyframes fadeInUp {
   from {
@@ -27,7 +22,7 @@ $color-bg: #fbfbfb;
 
 .page {
   padding: 32px 0px 0px;
-  color: $color-text-main;
+  color: $text-primary;
   animation: fadeInUp 0.5s ease-out forwards;
 }
 
@@ -45,7 +40,7 @@ $color-bg: #fbfbfb;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  color: $color-text-muted;
+  color: $text-secondary;
   padding: 0;
   margin-bottom: 24px;
   transition: color 0.2s ease;
@@ -57,7 +52,7 @@ $color-bg: #fbfbfb;
   }
 
   &:hover {
-    color: $color-primary;
+    color: $navy;
   }
 }
 
@@ -77,7 +72,7 @@ $color-bg: #fbfbfb;
 .pageTitle {
   font-size: 24px;
   font-weight: 600;
-  color: $color-primary;
+  color: $navy;
   margin: 0;
 }
 
@@ -94,10 +89,10 @@ $color-bg: #fbfbfb;
 
 .btnBlacklist {
   padding: 10px 20px;
-  border: 1px solid $color-danger;
+  border: 1px solid $error;
   border-radius: 6px;
   background: transparent;
-  color: $color-danger;
+  color: $error;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -106,17 +101,17 @@ $color-bg: #fbfbfb;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background: $color-danger;
-    color: #fff;
+    background: $error;
+    color: $white;
   }
 }
 
 .btnActivate {
   padding: 10px 20px;
-  border: 1px solid $color-accent;
+  border: 1px solid $teal;
   border-radius: 6px;
   background: transparent;
-  color: $color-accent;
+  color: $teal;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -125,7 +120,7 @@ $color-bg: #fbfbfb;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background: $color-accent;
-    color: #fff;
+    background: $teal;
+    color: $white;
   }
 }
