@@ -82,12 +82,19 @@ export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       />
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
         <div className={styles.sidebarContent}>
-          <div className={styles.switchOrg}>
-            <span className={styles.icon}>
+          <div className={styles.switchOrgWrapper}>
+            <span className={styles.switchOrgIcon}>
               <img src={"/icons/briefcase.svg"} />
             </span>
-            <span>Switch Organization</span>
-            <span className={styles.arrow}>
+            <select className={styles.switchOrg} defaultValue="">
+              <option value="" disabled>
+                Switch Organization
+              </option>
+              <option value="lendsqr">Lendsqr</option>
+              <option value="irorun">Irorun</option>
+              <option value="angala">Angala</option>
+            </select>
+            <span className={styles.switchOrgArrow}>
               <img src={"/icons/caret-down.svg"} />
             </span>
           </div>
