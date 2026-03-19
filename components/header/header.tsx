@@ -10,11 +10,15 @@ interface HeaderProps {
   onMenuClick?: () => void;
   isSidebarOpen?: boolean;
   onSearch?: (query: string) => void;
+  initialSearch?: string;
 }
 
-export default function Header({ onMenuClick, isSidebarOpen, onSearch }: HeaderProps) {
+export default function Header({ onMenuClick, isSidebarOpen, onSearch, initialSearch: initialSearchProp }: HeaderProps) {
+  // Only use useSearchParams if initialSearch prop is not provided
   const searchParams = useSearchParams();
-  const initialSearch = searchParams?.get("search") || "";
+  const initialSearch = initialSearchProp !== undefined 
+    ? initialSearchProp 
+    : (searchParams?.get("search") || "");
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [showMobileDropdown, setShowMobileDropdown] = useState(false);
   const [user, setUser] = useState<LoginUser | null>(null);
